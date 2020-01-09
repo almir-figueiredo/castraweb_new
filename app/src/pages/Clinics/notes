@@ -1,0 +1,108 @@
+  const finalSchedules = range.map(day => {
+    const animals = titles.map(a => {
+      const check = SchedulesFormated.includes([a, day]);
+      /* function isTrue(value) {
+        return value === true;
+      }
+      const filter = check.filter(check, isTrue); */
+      return check;
+    });
+    return animals;
+  });
+  console.log(finalSchedules);
+
+  ----------
+
+   console.log(schedules);
+
+  useEffect(() => {
+    async function allSchedules() {
+      const filteredData = schedules.map(e => {
+        const { specie } = e.Animal;
+        const { gender } = e.Animal;
+        const { size } = e.Animal;
+        const { date } = e;
+        return [specie, gender, size, date];
+      });
+
+      const SchedulesFormated = filteredData.map(day => {
+        const checkDate = setMilliseconds(
+          setSeconds(setMinutes(setHours(parseISO(day[3]), 0), 0), 0),
+          0
+        );
+        const compareDate = utcToZonedTime(checkDate, timezone);
+        const response = [];
+        if (day[0] === 'canina' && day[1] === 'F' && day[2] === 'G')
+          response.push('Cadela (G)', compareDate);
+        if (day[0] === 'canina' && day[1] === 'F' && day[2] === 'P')
+          response.push('Cadela (P)', compareDate);
+        if (day[0] === 'canina' && day[1] === 'M')
+          response.push('Cachorro', compareDate);
+        if (day[0] === 'felina' && day[1] === 'F')
+          response.push('Gata', compareDate);
+        if (day[0] === 'felina' && day[1] === 'M')
+          response.push('Gato', compareDate);
+        return response;
+      });
+      setAllSchedules(SchedulesFormated);
+    }
+    if (id) {
+      allSchedules();
+    }
+  }, [id, schedules, timezone]);
+
+  /* const finalSchedules = range.map(day => {
+    const animals = titles.map(a => {
+      const check = SchedulesFormated.includes([a, day]);
+      function isTrue(value) {
+        return value === true;
+      }
+      const filter = check.filter(check, isTrue);
+      return check;
+    });
+    return animals;
+  });
+  console.log(finalSchedules); */
+
+  /* const changedSpeciesData = filteredData.map(e => {
+    const response = [];
+    if (e[0] === 'canina' && e[1] === 'F' && e[2] === 'G')
+      response.push('Cadela (G)', e[4]);
+    if (e[0] === 'canina' && e[1] === 'F' && e[2] === 'P')
+      response.push('Cadela (P)', e[4]);
+    if (e[0] === 'canina' && e[1] === 'M') response.push('Cachorro', e[4]);
+    if (e[0] === 'felina' && e[1] === 'F') response.push('Gata', e[4]);
+    if (e[0] === 'felina' && e[1] === 'M') response.push('Gato', e[4]);
+    return response;
+  });
+
+  console.log(changedSpeciesData); */
+
+  /* const uniqueDays = ScheduledDays.filter(
+    (item, i, ar) => ar.indexOf(item) === i
+  ); */
+
+  /* console.log(isSameDay(dates[9], uniqueDays[0]));
+  console.log(dates[9]);
+  console.log(uniqueDays[0]);
+  console.log(changedSpeciesData); */
+
+  /* console.log(
+    uniqueDays.map(e => {
+      const CadG = filteredData.map(f => {
+        const n = f.includes(e);
+        return n;
+      });
+      return CadG;
+    })
+  ); */
+
+  /* const teste = dates.map(e => {
+    const x = changedSpeciesData.map(f => {
+      const y = f.includes(e);
+      return y;
+    });
+    return x;
+  }); */
+
+  // console.log(teste);
