@@ -47,12 +47,12 @@ routes.post('/users', UserController.store);
 routes.get('/users', UserController.list);
 routes.get('/users/:id', UserController.details);
 routes.put('/users/:id', UserController.update);
-routes.get('/users/animals/:userId', AnimalController.list);
+routes.get('/users/:userId/animals', AnimalController.list);
 routes.delete('/users/:id', UserController.delete);
 
-routes.post('/animals/:userId', AnimalController.store);
-routes.put('/animals/:animalId', AnimalController.update);
-routes.get('/animals/:animalId', AnimalController.details);
+routes.post('/users/:userId/animals', AnimalController.store);
+routes.put('/users/:userId/animals/:id', AnimalController.update);
+routes.get('/users/:userId/animals/:id', AnimalController.details);
 routes.get('/animals/:userId/availabilities', AvailableController.index);
 
 routes.post(

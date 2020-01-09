@@ -59,10 +59,7 @@ export default function Users() {
         <Menu>
           <strong> Usuários </strong>
           <MenuBar>
-            <button
-              type="button"
-              onClick={() => history.push('/users/details')}
-            >
+            <button type="button" onClick={() => history.push('/users/new')}>
               <MdAdd size={24} />
               CADASTRAR
             </button>
@@ -101,14 +98,14 @@ export default function Users() {
                   <button
                     className="edit"
                     type="button"
-                    onClick={() => history.push(`/animals/${user.id}`)}
+                    onClick={() => history.push(`users/${user.id}/animals`)}
                   >
                     cadastrar animais
                   </button>
                   <button
                     className="edit"
                     type="button"
-                    onClick={() => history.push(`/users/details/${user.id}`)}
+                    onClick={() => history.push(`/users/edit/${user.id}`)}
                   >
                     editar
                   </button>

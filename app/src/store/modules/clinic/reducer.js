@@ -1,33 +1,23 @@
 import produce from 'immer';
 
 const INITIAL_STATE = {
-  token: null,
-  signed: false,
-  loading: false,
+  profile: null,
+  id: null,
 };
 
-export default function clinicAuth(state = INITIAL_STATE, action) {
+export default function clinic(state = INITIAL_STATE, action) {
   return produce(state, draft => {
     switch (action.type) {
-      case '@clinic/SIGN_IN_REQUEST': {
-        draft.loading = true;
+      case '@clinic/UPDATE_PROFILE_SUCCESS': {
+        draft.profile = action.payload.profile;
+        draft.id = action.payload.profile.id;
         break;
       }
-      case '@clinic/SIGN_IN_SUCCESS': {
-        draft.token = action.payload.token;
-        draft.signed = true;
-        draft.loading = false;
+      case '@clinic/SIGN_UP_FAILURE': {
+        draft.profile = null;
         break;
       }
-      case '@clinic/SIGN_FAILURE': {
-        draft.loading = false;
-        break;
-      }
-      case '@clinic/SIGN_OUT': {
-        draft.token = null;
-        draft.signed = false;
-        break;
-      }
+
       default:
     }
   });

@@ -6,21 +6,25 @@ import Initial from '../pages/Initial';
 
 import OperatorSignin from '../pages/OperatorSignin';
 import Operators from '../pages/Operators';
-import OperatorDetails from '../pages/Operators/OperatorDetails';
+import OperatorNew from '../pages/Operators/OperatorNew';
+import OperatorEdit from '../pages/Operators/OperatorEdit';
 
 import ClinicSignin from '../pages/ClinicSignin';
 import Clinics from '../pages/Clinics';
-import ClinicDetails from '../pages/Clinics/ClinicDetails';
+import ClinicNew from '../pages/Clinics/ClinicNew';
+import ClinicEdit from '../pages/Clinics/ClinicEdit';
 import ClinicSchedules from '../pages/Schedules';
 import Calendar from '../pages/Clinics/ClinicCalendar';
 
-// import ScheduleDetails from '../pages/Schedules';
+// import ScheduleNew from '../pages/Schedules';
 
 import Users from '../pages/Users';
-import UserDetails from '../pages/Users/UserDetails';
+import UserNew from '../pages/Users/UserNew';
+import UserEdit from '../pages/Users/UserEdit';
 
 import UserAnimals from '../pages/Users/UserAnimals';
-import AnimalDetails from '../pages/Animals/AnimalDetails';
+import AnimalNew from '../pages/Animals/AnimalNew';
+import AnimalEdit from '../pages/Animals/AnimalEdit';
 
 import Profile from '../pages/Profile';
 
@@ -30,32 +34,17 @@ export default function Routes() {
       <Route path="/" exact component={Initial} />
       <Route path="/signin-operator" exact component={OperatorSignin} />
       <Route path="/operators" exact component={Operators} isPrivate />
+      <Route path="/operators/new" exact component={OperatorNew} isPrivate />
       <Route
-        path="/operators/details/"
+        path="/operators/edit/:id"
         exact
-        component={OperatorDetails}
-        isPrivate
-      />
-      <Route
-        path="/operators/details/:id"
-        exact
-        component={OperatorDetails}
+        component={OperatorEdit}
         isPrivate
       />
       <Route path="/signin-clinic" exact component={ClinicSignin} />
       <Route path="/clinics" exact component={Clinics} isPrivate />
-      <Route
-        path="/clinics/details/"
-        exact
-        component={ClinicDetails}
-        isPrivate
-      />
-      <Route
-        path="/clinics/details/:id"
-        exact
-        component={ClinicDetails}
-        isPrivate
-      />
+      <Route path="/clinics/new" exact component={ClinicNew} isPrivate />
+      <Route path="/clinics/edit/:id" exact component={ClinicEdit} isPrivate />
       <Route
         path="/clinics/schedules/:id/:date"
         exact
@@ -69,30 +58,36 @@ export default function Routes() {
         isPrivate
       />
       {/* <Route
-        path="/schedules/details/"
+        path="/schedules/new/"
         exact
-        component={ScheduleDetails}
+        component={ScheduleNew}
         isPrivate
       />
       <Route
-        path="/schedules/details/:id"
+        path="/schedules/edit/:id"
         exact
-        component={ScheduleDetails}
+        component={ScheduleEdit}
         isPrivate
       /> */}
       <Route path="/users" exact component={Users} isPrivate />
-      <Route path="/users/details/" exact component={UserDetails} isPrivate />
+      <Route path="/users/new" exact component={UserNew} isPrivate />
+      <Route path="/users/edit/:id" exact component={UserEdit} isPrivate />
       <Route
-        path="/users/details/:id"
+        path="/users/:id/animals"
         exact
-        component={UserDetails}
+        component={UserAnimals}
         isPrivate
       />
-      <Route path="/animals/:id" exact component={UserAnimals} isPrivate />
       <Route
-        path="/animals/details/:id"
+        path="/users/:id/animals/new"
         exact
-        component={AnimalDetails}
+        component={AnimalNew}
+        isPrivate
+      />
+      <Route
+        path="/users/:userId/animals/edit/:id"
+        exact
+        component={AnimalEdit}
         isPrivate
       />
       <Route path="/profile" exact component={Profile} isPrivate />

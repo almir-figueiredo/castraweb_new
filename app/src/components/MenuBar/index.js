@@ -16,16 +16,13 @@ export default function MenuBar(props) {
         {withId ? (
           <button
             type="button"
-            onClick={() => history.push(`/${route}/details/${id}`)}
+            onClick={() => history.push(`/${route}/new/${id}`)}
           >
             <MdAdd size={24} />
             CADASTRAR
           </button>
         ) : (
-          <button
-            type="button"
-            onClick={() => history.push(`/${route}/details`)}
-          >
+          <button type="button" onClick={() => history.push(`/${route}/new`)}>
             <MdAdd size={24} />
             CADASTRAR
           </button>

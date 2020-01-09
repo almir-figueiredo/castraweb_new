@@ -32,10 +32,7 @@ export default function Clinics() {
         <Menu>
           <strong>Clínicas cadastradas</strong>
           <MenuBar>
-            <button
-              type="button"
-              onClick={() => history.push('/clinics/details')}
-            >
+            <button type="button" onClick={() => history.push('/clinics/new')}>
               <MdAdd size={24} />
               CADASTRAR
             </button>
@@ -71,9 +68,7 @@ export default function Clinics() {
                   <button
                     className="edit"
                     type="button"
-                    onClick={() =>
-                      history.push(`/clinics/details/${clinic.id}`)
-                    }
+                    onClick={() => history.push(`/clinics/edit/${clinic.id}`)}
                   >
                     editar
                   </button>

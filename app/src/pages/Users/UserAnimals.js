@@ -13,7 +13,7 @@ export default function UserAnimals() {
 
   useEffect(() => {
     async function loadAnimals() {
-      const { data } = await api.get(`users/animals/${id}`);
+      const { data } = await api.get(`users/${id}/animals`);
       setAnimals(data);
     }
     if (id) {
@@ -35,8 +35,7 @@ export default function UserAnimals() {
       <ContainerAnimals>
         <MenuBar
           title="ANIMAIS CADASTRADOS PARA O USUÁRIO"
-          route="animals"
-          withId
+          route={`users/${id}/animals`}
           id={id}
         />
 
@@ -64,7 +63,7 @@ export default function UserAnimals() {
                       className="edit"
                       type="button"
                       onClick={() =>
-                        history.push(`/animals/details/${animal.id}`)
+                        history.push(`/users/${id}/animals/edit/${animal.id}`)
                       }
                     >
                       editar

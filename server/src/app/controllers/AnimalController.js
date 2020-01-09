@@ -90,44 +90,26 @@ class AnimalController {
 
   async update(req, res) {
     const schema = Yup.object().shape({
-      auth_number: Yup.string().required(),
-      name: Yup.string().required(),
-      specie: Yup.string().required(),
-      gender: Yup.string().required(),
-      race: Yup.string().required(),
-      size: Yup.string().required(),
-      age: Yup.string().required(),
+      auth_number: Yup.string(),
+      name: Yup.string(),
+      specie: Yup.string(),
+      gender: Yup.string(),
+      race: Yup.string(),
+      size: Yup.string(),
+      age: Yup.string(),
     });
 
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails.' });
     }
 
-    const animal = await Animal.findByPk(req.animalId);
+    const { id } = req.params;
 
-    await animal.update(req.body);
+    let animal = await Animal.findByPk(id);
 
-    const {
-      id,
-      auth_number,
-      name,
-      specie,
-      gender,
-      race,
-      size,
-      age,
-    } = await Animal.findByPk(req.animalId);
+    animal = await animal.update(req.body);
 
-    return res.json({
-      id,
-      auth_number,
-      name,
-      specie,
-      gender,
-      race,
-      size,
-      age,
-    });
+    return res.status(200).json(animal);
   }
 }
 

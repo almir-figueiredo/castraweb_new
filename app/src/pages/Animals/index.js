@@ -21,7 +21,7 @@ export default function Animals() {
 
   async function handleDelete(id) {
     // eslint-disable-next-line no-alert
-    if (window.confirm('Deseja deletar este operador?') === true) {
+    if (window.confirm('Deseja deletar este animal?') === true) {
       await api.delete(`animals/${id}`);
 
       setAnimals(animals.filter(animal => animal.id !== id));

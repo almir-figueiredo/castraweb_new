@@ -11,19 +11,17 @@ import { Container, Content, AnimalForm } from './styles';
 
 import DetailsMenu from '../../components/DetailsMenu';
 
-export default function AnimalDetails() {
-  const { id } = useParams();
+export default function AnimalEdit() {
+  const { userId, id } = useParams();
   const [animal, setAnimal] = useState();
 
   useEffect(() => {
     async function loadAnimal() {
-      const { data } = await api.get(`animals/${id}`);
+      const { data } = await api.get(`users/${userId}/animals/${id}`);
       setAnimal(data);
     }
-    if (id) {
-      loadAnimal();
-    }
-  }, [id]);
+    loadAnimal();
+  }, [id, userId]);
 
   const schema = Yup.object().shape({
     auth_number: Yup.string().required(),
@@ -36,13 +34,8 @@ export default function AnimalDetails() {
   });
 
   async function handleSubmit(data) {
-    if (id) {
-      await api.put(`animals/${id}`, data);
-      return history.goBack();
-    }
-
-    await api.post('animals/', data);
-    history.goBack();
+    await api.put(`users/${userId}/animals/${id}`, data);
+    return history.goBack();
   }
 
   const sp = [
@@ -60,7 +53,7 @@ export default function AnimalDetails() {
 
   return (
     <Container>
-      <DetailsMenu name="Animal" form="animalForm" edit={!!id} />
+      <DetailsMenu name="Animal" form="animalForm" edit />
 
       <Content>
         <AnimalForm

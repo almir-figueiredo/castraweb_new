@@ -5,30 +5,39 @@ export function clinicSignInRequest(email, password) {
   };
 }
 
-export function clinicSignInSuccess(token, operator) {
+export function clinicSignInSuccess(token) {
   return {
     type: '@clinic/SIGN_IN_SUCCESS',
-    payload: { token, operator },
+    payload: { token },
   };
 }
 
-export function clinicSignUpRequest(
-  name,
-  cpf,
-  email,
-  registration,
-  type,
-  password
-) {
+export function clinicSignUpRequest(data) {
   return {
     type: '@clinic/SIGN_UP_REQUEST',
-    payload: { name, cpf, email, registration, type, password },
+    payload: { data },
   };
 }
-
-export function clinicSignFailure() {
+export function clinicUpdateRequest(id) {
   return {
-    type: '@clinic/SIGN_FAILURE',
+    type: '@clinic/UPDATE_PROFILE_REQUEST',
+    payload: { id },
+  };
+}
+export function clinicUpdateSuccess(profile) {
+  return {
+    type: '@clinic/UPDATE_PROFILE_SUCCESS',
+    payload: { profile },
+  };
+}
+export function clinicUpdateFailure() {
+  return {
+    type: '@clinic/UPDATE_PROFILE_FAILURE',
+  };
+}
+export function clinicSignUpFailure() {
+  return {
+    type: '@clinic/SIGN_UP_FAILURE',
   };
 }
 export function clinicSignOut() {

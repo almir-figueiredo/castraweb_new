@@ -83,38 +83,16 @@ class ClinicController {
       district: Yup.string(),
       zipCode: Yup.string(),
     });
-
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails.' });
     }
     const { id } = req.params;
 
-    const clinic = await Clinic.findByPk(id);
+    let clinic = await Clinic.findByPk(id);
 
-    const {
-      name,
-      cnpj,
-      technical_legal,
-      email,
-      phone,
-      phone_24h,
-      address,
-      district,
-      zipCode,
-    } = await clinic.update(req.body);
+    clinic = await clinic.update(req.body);
 
-    return res.json({
-      id,
-      name,
-      cnpj,
-      technical_legal,
-      email,
-      phone,
-      phone_24h,
-      address,
-      district,
-      zipCode,
-    });
+    return res.status(200).json(clinic);
   }
 
   async list(req, res) {

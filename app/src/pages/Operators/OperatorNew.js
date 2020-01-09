@@ -1,7 +1,6 @@
 /* eslint-disable consistent-return */
-import React, { useState, useEffect } from 'react';
-import { Select, Input } from '@rocketseat/unform';
-import { useParams } from 'react-router-dom';
+import React from 'react';
+import { Input, Select } from '@rocketseat/unform';
 import * as Yup from 'yup';
 
 import api from '../../services/api';
@@ -11,41 +10,19 @@ import { Container, Content, OperatorForm } from './styles';
 
 import DetailsMenu from '../../components/DetailsMenu';
 
-export default function OperatorDetails() {
-  const { id } = useParams();
-  const [operator, setOperator] = useState();
-
-  useEffect(() => {
-    async function loadOperator() {
-      const { data } = await api.get(`operators/${id}`);
-      setOperator(data);
-    }
-    if (id) {
-      loadOperator();
-    }
-  }, [id]);
-
+export default function OperatorNew() {
   const schema = Yup.object().shape({
     name: Yup.string().required(),
     cpf: Yup.string().required(),
     email: Yup.string()
       .email()
       .required(),
-    registration: Yup.string()
-      .truncate()
-      .required(),
-    type: Yup.string()
-      .truncate()
-      .required(),
+    registration: Yup.string().required(),
+    type: Yup.string().required(),
     password: Yup.string().min(6),
   });
 
   async function handleSubmit(data) {
-    if (id) {
-      await api.put(`operators/${id}`, data);
-      return history.goBack();
-    }
-
     await api.post('operators/', data);
     history.goBack();
   }
@@ -58,15 +35,10 @@ export default function OperatorDetails() {
 
   return (
     <Container>
-      <DetailsMenu name="Operador" form="operatorForm" edit={!id} />
+      <DetailsMenu name="Operador" form="operatorForm" edit={false} />
 
       <Content>
-        <OperatorForm
-          schema={schema}
-          id="operatorForm"
-          onSubmit={handleSubmit}
-          initialData={operator}
-        >
+        <OperatorForm schema={schema} id="operatorForm" onSubmit={handleSubmit}>
           <div className="fullSize">
             <strong>NOME COMPLETO</strong>
             <Input name="name" />
@@ -87,12 +59,10 @@ export default function OperatorDetails() {
             <strong>PERFIL</strong>
             <Select name="type" options={options} />
           </div>
-          {id ? (
-            <div>
-              <strong>SENHA INICIAL</strong>
-              <Input name="password" />
-            </div>
-          ) : null}
+          <div>
+            <strong>SENHA INICIAL</strong>
+            <Input name="password" />
+          </div>
         </OperatorForm>
       </Content>
     </Container>

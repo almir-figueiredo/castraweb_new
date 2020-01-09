@@ -1,7 +1,6 @@
 /* eslint-disable consistent-return */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Select, Input } from '@rocketseat/unform';
-import { useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import api from '../../services/api';
@@ -11,20 +10,7 @@ import { Container, Content, UserForm } from './styles';
 
 import DetailsMenu from '../../components/DetailsMenu';
 
-export default function UserDetails() {
-  const { id } = useParams();
-  const [user, setUser] = useState();
-
-  useEffect(() => {
-    async function loadUser() {
-      const { data } = await api.get(`users/${id}`);
-      setUser(data);
-    }
-    if (id) {
-      loadUser();
-    }
-  }, [id]);
-
+export default function UserNew() {
   const schema = Yup.object().shape({
     name: Yup.string().required(),
     cpf: Yup.string().required(),
@@ -43,11 +29,6 @@ export default function UserDetails() {
   });
 
   async function handleSubmit(data) {
-    if (id) {
-      await api.put(`users/${id}`, data);
-      return history.goBack();
-    }
-
     await api.post('users/', data);
     history.goBack();
   }
@@ -59,15 +40,10 @@ export default function UserDetails() {
 
   return (
     <Container>
-      <DetailsMenu name="Usuário" form="userForm" edit={!id} />
+      <DetailsMenu name="Usuário" form="userForm" edit={false} />
 
       <Content>
-        <UserForm
-          schema={schema}
-          id="userForm"
-          onSubmit={handleSubmit}
-          initialData={user}
-        >
+        <UserForm schema={schema} id="userForm" onSubmit={handleSubmit}>
           <div className="fullSize">
             <strong>NOME COMPLETO</strong>
             <Input name="name" />
@@ -104,12 +80,10 @@ export default function UserDetails() {
             <strong>GRANDES PLANTÉIS?</strong>
             <Select name="group_mantainer" options={options} />
           </div>
-          {!id ? (
-            <div>
-              <strong>SENHA INICIAL</strong>
-              <Input name="password" />
-            </div>
-          ) : null}
+          <div>
+            <strong>SENHA INICIAL</strong>
+            <Input name="password" />
+          </div>
         </UserForm>
       </Content>
     </Container>

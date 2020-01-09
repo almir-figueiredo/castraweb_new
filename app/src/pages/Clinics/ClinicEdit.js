@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { Input } from '@rocketseat/unform';
+import { useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import api from '../../services/api';
@@ -11,18 +11,16 @@ import { Container, Content, ClinicForm } from './styles';
 
 import DetailsMenu from '../../components/DetailsMenu';
 
-export default function ClinicDetails() {
+export default function ClinicEdit() {
   const { id } = useParams();
-  const [clinic, setClinic] = useState('');
+  const [clinic, setClinic] = useState();
 
   useEffect(() => {
     async function loadClinic() {
       const { data } = await api.get(`clinics/${id}`);
       setClinic(data);
     }
-    if (id) {
-      loadClinic();
-    }
+    loadClinic();
   }, [id]);
 
   const schema = Yup.object().shape({
@@ -43,23 +41,18 @@ export default function ClinicDetails() {
   });
 
   async function handleSubmit(data) {
-    if (id) {
-      await api.put(`clinics/${id}`, data);
-      return history.goBack();
-    }
-
-    await api.post('clinics/', data);
-    history.goBack();
+    await api.put(`clinics/${id}`, data);
+    return history.goBack();
   }
 
   return (
     <Container>
-      <DetailsMenu name="Clínica" form="clinicForm" edit={!id} />
+      <DetailsMenu name="Clinica" form="ClinicForm" edit />
 
       <Content>
         <ClinicForm
           schema={schema}
-          id="clinicForm"
+          id="ClinicForm"
           onSubmit={handleSubmit}
           initialData={clinic}
         >
@@ -99,12 +92,6 @@ export default function ClinicDetails() {
             <strong>REGIÃO ADMINISTRATIVA</strong>
             <Input name="district" />
           </div>
-          {id ? (
-            <div>
-              <strong>SENHA INICIAL</strong>
-              <Input name="password" />
-            </div>
-          ) : null}
         </ClinicForm>
       </Content>
     </Container>

@@ -3,9 +3,13 @@ import { toast } from 'react-toastify';
 import history from '../../../services/history';
 import api from '../../../services/api';
 
-import { clinicSignInSuccess, clinicSignFailure } from './actions';
+import {
+  clinicSignUpFailure,
+  clinicUpdateSuccess,
+  clinicUpdateFailure,
+} from './actions';
 
-export function* signIn({ payload }) {
+/* export function* signIn({ payload }) {
   try {
     const { email, password } = payload;
 
@@ -25,30 +29,38 @@ export function* signIn({ payload }) {
     toast.error('Conta inexistente, verifique seus dados');
     yield put(clinicSignFailure());
   }
-}
+} */
 
-export function* signUp({ payload }) {
+export function* clinicSignUp({ payload }) {
   try {
-    const { name, cpf, email, registration, type, password } = payload;
+    const { data } = payload;
 
-    yield call(api.post, 'operators', {
-      name,
-      cpf,
-      email,
-      registration,
-      type,
-      password,
-    });
+    yield call(api.post, 'clinics', data);
 
-    history.push('/');
+    history.push('/clinics');
   } catch (err) {
     toast.error('Falha no cadastro, verifique seus dados');
 
-    yield put(clinicSignFailure());
+    yield put(clinicSignUpFailure());
   }
 }
 
-export function signOut() {
+export function* clinicUpdateRequest({ payload }) {
+  try {
+    const { id, data } = payload;
+
+    const response = yield call(api.put, `clinics/${id}`, data);
+
+    toast.success('Cadastro atualizado');
+
+    yield put(clinicUpdateSuccess(response.data));
+  } catch (err) {
+    toast.error('Erro ao atualizar perfil, confira seus dados!');
+    yield put(clinicUpdateFailure());
+  }
+}
+
+/* export function signOut() {
   history.push('/');
 }
 
@@ -60,11 +72,11 @@ export function setToken({ payload }) {
   if (token) {
     api.defaults.headers.Authorization = `Bearer ${token}`;
   }
-}
+} */
 
 export default all([
-  takeLatest('persist/REHYDRATE', setToken),
-  takeLatest('@clinic/SIGN_IN_REQUEST', signIn),
-  takeLatest('@clinic/SIGN_UP_REQUEST', signUp),
-  takeLatest('@clinic/SIGN_OUT', signOut),
+  // takeLatest('persist/REHYDRATE', setToken),
+  takeLatest('@clinic/UPDATE_PROFILE_REQUEST', clinicUpdateRequest),
+  takeLatest('@clinic/SIGN_UP_REQUEST', clinicSignUp),
+  // takeLatest('@clinic/SIGN_OUT', signOut),
 ]);

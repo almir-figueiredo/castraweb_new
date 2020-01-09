@@ -11,7 +11,7 @@ import { Container, Content, OperatorForm } from './styles';
 
 import DetailsMenu from '../../components/DetailsMenu';
 
-export default function OperatorDetails() {
+export default function OperatorEdit() {
   const { id } = useParams();
   const [operator, setOperator] = useState();
 
@@ -20,9 +20,7 @@ export default function OperatorDetails() {
       const { data } = await api.get(`operators/${id}`);
       setOperator(data);
     }
-    if (id) {
-      loadOperator();
-    }
+    loadOperator();
   }, [id]);
 
   const schema = Yup.object().shape({
@@ -37,13 +35,8 @@ export default function OperatorDetails() {
   });
 
   async function handleSubmit(data) {
-    if (id) {
-      await api.put(`operators/${id}`, data);
-      return history.goBack();
-    }
-
-    await api.post('operators/', data);
-    history.goBack();
+    await api.put(`operators/${id}`, data);
+    return history.goBack();
   }
 
   const options = [
@@ -54,7 +47,7 @@ export default function OperatorDetails() {
 
   return (
     <Container>
-      <DetailsMenu name="Operador" form="operatorForm" edit={!id} />
+      <DetailsMenu name="Operador" form="operatorForm" edit />
 
       <Content>
         <OperatorForm
@@ -83,12 +76,6 @@ export default function OperatorDetails() {
             <strong>PERFIL</strong>
             <Select name="type" options={options} />
           </div>
-          {!id ? (
-            <div>
-              <strong>SENHA INICIAL</strong>
-              <Input name="password" />
-            </div>
-          ) : null}
         </OperatorForm>
       </Content>
     </Container>

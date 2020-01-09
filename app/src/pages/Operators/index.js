@@ -51,7 +51,7 @@ export default function Operators() {
           <MenuBar>
             <button
               type="button"
-              onClick={() => history.push('/operators/details')}
+              onClick={() => history.push('/operators/new')}
             >
               <MdAdd size={24} />
               CADASTRAR
@@ -92,7 +92,7 @@ export default function Operators() {
                     className="edit"
                     type="button"
                     onClick={() =>
-                      history.push(`/operators/details/${operator.id}`)
+                      history.push(`/operators/edit/${operator.id}`)
                     }
                   >
                     editar
