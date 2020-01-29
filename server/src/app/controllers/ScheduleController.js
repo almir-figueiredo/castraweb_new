@@ -9,39 +9,36 @@ class ScheduleController {
   async list(req, res) {
     const { date } = req.query;
     const parsedDate = parseISO(date);
-
-    const appointments = await Appointment.findAll({
-      where: {
-        canceled_at: null,
-        date: {
-          [Op.between]: [
-            subHours(startOfDay(parsedDate), 2),
-            subHours(endOfDay(parsedDate), 2),
-          ],
+    if (date) {
+      const appointments = await Appointment.findAll({
+        where: {
+          canceled_at: null,
+          date: {
+            [Op.between]: [
+              subHours(startOfDay(parsedDate), 2),
+              subHours(endOfDay(parsedDate), 2),
+            ],
+          },
         },
-      },
-      attributes: ['id', 'date', 'cancelable', 'situation'],
-      include: [
-        {
-          model: User,
-          attributes: ['name', 'cpf', 'email', 'phone', 'district'],
-          order: ['name'],
-        },
-        {
-          model: Animal,
-          attributes: ['name', 'specie', 'gender', 'race', 'age', 'size'],
-        },
-      ],
-    });
+        attributes: ['id', 'date', 'cancelable', 'situation', 'clinic_id'],
+        include: [
+          {
+            model: User,
+            attributes: ['name', 'cpf', 'email', 'phone', 'district'],
+            order: ['name'],
+          },
+          {
+            model: Animal,
+            attributes: ['name', 'specie', 'gender', 'race', 'age', 'size'],
+          },
+        ],
+      });
 
-    return res.json(appointments);
-  }
-
-  async index(req, res) {
-    const { clinic_id } = req.params;
-
+      return res.json(appointments);
+    }
     const schedule = await Appointment.findAll({
-      where: clinic_id,
+      // where: clinic_id,
+      attributes: ['id', 'date', 'cancelable', 'situation', 'clinic_id'],
       include: [
         {
           model: User,

@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Select, Input } from '@rocketseat/unform';
 import { useParams } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -8,23 +9,27 @@ import api from '../../services/api';
 import history from '../../services/history';
 
 import { Container, Content, AnimalForm } from './styles';
+import { animalsListRequest } from '../../store/modules/animal/actions';
 
 import DetailsMenu from '../../components/DetailsMenu';
 
 export default function AnimalNew() {
   const { id } = useParams();
+  const dispatch = useDispatch();
+
   const schema = Yup.object().shape({
-    auth_number: Yup.string().required(),
-    name: Yup.string().required(),
-    specie: Yup.string().required(),
-    gender: Yup.string().required(),
-    race: Yup.string().required(),
-    size: Yup.string().required(),
-    age: Yup.string().required(),
+    auth_number: Yup.string(),
+    name: Yup.string(),
+    specie: Yup.string(),
+    gender: Yup.string(),
+    race: Yup.string(),
+    size: Yup.string(),
+    age: Yup.string(),
   });
 
   async function handleSubmit(data) {
-    await api.post(`users/${id}animals/`, data);
+    await api.post(`users/${id}/animals/`, data);
+    dispatch(animalsListRequest(id));
     history.goBack();
   }
 
@@ -58,6 +63,10 @@ export default function AnimalNew() {
           <div>
             <strong>ESPÉCIE</strong>
             <Select name="specie" options={sp} />
+          </div>
+          <div>
+            <strong>RAÇA DO ANIMAL</strong>
+            <Input name="race" />
           </div>
           <div>
             <strong>SEXO DO ANIMAL</strong>

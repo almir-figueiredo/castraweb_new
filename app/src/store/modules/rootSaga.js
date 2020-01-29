@@ -2,8 +2,9 @@ import { all } from 'redux-saga/effects';
 
 import auth from './auth/sagas';
 import user from './user/sagas';
-import clinic from './clinic/sagas';
+import animal from './animal/sagas';
+import schedule from './schedule/sagas';
 
 export default function* rootSaga() {
-  return yield all([auth, clinic, user]);
+  return yield all([auth, animal, user, schedule]);
 }

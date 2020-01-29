@@ -26,20 +26,15 @@ export default function UserEdit() {
   }, [id]);
 
   const schema = Yup.object().shape({
-    name: Yup.string().required(),
-    cpf: Yup.string().required(),
-    birthday: Yup.string().required(),
-    email: Yup.string()
-      .email()
-      .required(),
-    phone: Yup.string().required(),
-    address: Yup.string().required(),
-    district: Yup.string().required(),
-    zipcode: Yup.string().required(),
-    password: Yup.string()
-      .required()
-      .min(6),
-    group_mantainer: Yup.boolean().required(),
+    name: Yup.string(),
+    cpf: Yup.string(),
+    birthday: Yup.date(),
+    email: Yup.string().email(),
+    phone: Yup.string(),
+    address: Yup.string(),
+    district: Yup.string(),
+    zipcode: Yup.string(),
+    group_mantainer: Yup.boolean(),
   });
 
   async function handleSubmit(data) {

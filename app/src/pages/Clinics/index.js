@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { MdAdd } from 'react-icons/md';
-
 import api from '../../services/api';
 import history from '../../services/history';
 import { Container, Menu, MenuBar, Content, Table } from './styles';

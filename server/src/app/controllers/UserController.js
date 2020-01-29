@@ -9,7 +9,7 @@ class UserController {
     const schema = Yup.object().shape({
       name: Yup.string(),
       cpf: Yup.string(),
-      birthday: Yup.string(),
+      birthday: Yup.date(),
       email: Yup.string().email(),
       phone: Yup.string(),
       address: Yup.string(),
@@ -18,7 +18,6 @@ class UserController {
       password: Yup.string().min(6),
       group_mantainer: Yup.boolean(),
     });
-
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails.' });
     }
@@ -28,7 +27,9 @@ class UserController {
     if (cpfExists) {
       return res.status(400).json({ error: 'User already exists.' });
     }
-    const userExists = await User.findOne({ where: { email: req.body.email } });
+    const userExists = await User.findOne({
+      where: { email: req.body.email },
+    });
 
     if (userExists) {
       return res.status(400).json({ error: 'User already exists.' });
@@ -48,8 +49,8 @@ class UserController {
     } = await User.create(req.body);
 
     /* if (clinic) {
-      await Cache.invalidate('clinics');
-    } */
+        await Cache.invalidate('clinics');
+      } */
 
     return res.json({
       id,
@@ -69,7 +70,7 @@ class UserController {
     const schema = Yup.object().shape({
       name: Yup.string(),
       cpf: Yup.string(),
-      birthday: Yup.string(),
+      birthday: Yup.date(),
       email: Yup.string().email(),
       phone: Yup.string(),
       address: Yup.string(),

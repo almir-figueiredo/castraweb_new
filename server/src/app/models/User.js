@@ -7,7 +7,7 @@ class User extends Model {
       {
         name: Sequelize.STRING,
         cpf: Sequelize.STRING,
-        birthday: Sequelize.STRING,
+        birthday: Sequelize.DATE,
         email: Sequelize.STRING,
         phone: Sequelize.STRING,
         address: Sequelize.STRING,

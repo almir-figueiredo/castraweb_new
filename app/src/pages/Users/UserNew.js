@@ -14,7 +14,7 @@ export default function UserNew() {
   const schema = Yup.object().shape({
     name: Yup.string().required(),
     cpf: Yup.string().required(),
-    birthday: Yup.string().required(),
+    birthday: Yup.date().required(),
     email: Yup.string()
       .email()
       .required(),
@@ -29,6 +29,7 @@ export default function UserNew() {
   });
 
   async function handleSubmit(data) {
+    console.log(data);
     await api.post('users/', data);
     history.goBack();
   }

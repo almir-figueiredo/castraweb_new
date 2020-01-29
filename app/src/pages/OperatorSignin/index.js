@@ -4,6 +4,9 @@ import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 
 import { signInRequest } from '../../store/modules/auth/actions';
+import { eventsListRequest } from '../../store/modules/schedule/actions';
+import { allAnimalsRequest } from '../../store/modules/animal/actions';
+import history from '../../services/history';
 
 import logo from '../../assets/logo.svg';
 
@@ -20,6 +23,9 @@ export default function OperatorSignin() {
 
   function handleSubmit({ email, password }) {
     dispatch(signInRequest(email, password));
+    dispatch(eventsListRequest());
+    dispatch(allAnimalsRequest());
+    history.push(`/clinics`);
   }
   return (
     <>

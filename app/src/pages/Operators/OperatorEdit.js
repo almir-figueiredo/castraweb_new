@@ -24,14 +24,11 @@ export default function OperatorEdit() {
   }, [id]);
 
   const schema = Yup.object().shape({
-    name: Yup.string().required(),
-    cpf: Yup.string().required(),
-    email: Yup.string()
-      .email()
-      .required(),
-    registration: Yup.string().required(),
-    type: Yup.string().required(),
-    password: Yup.string().min(6),
+    name: Yup.string(),
+    cpf: Yup.string(),
+    email: Yup.string().email(),
+    registration: Yup.string(),
+    type: Yup.string(),
   });
 
   async function handleSubmit(data) {

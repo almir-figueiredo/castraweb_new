@@ -26,6 +26,7 @@ import UserAnimals from '../pages/Users/UserAnimals';
 import AnimalNew from '../pages/Animals/AnimalNew';
 import AnimalEdit from '../pages/Animals/AnimalEdit';
 
+import Appointments from '../pages/Appointments';
 import Profile from '../pages/Profile';
 
 export default function Routes() {
@@ -88,6 +89,12 @@ export default function Routes() {
         path="/users/:userId/animals/edit/:id"
         exact
         component={AnimalEdit}
+        isPrivate
+      />
+      <Route
+        path="/users/:userId/animals/appointment"
+        exact
+        component={Appointments}
         isPrivate
       />
       <Route path="/profile" exact component={Profile} isPrivate />

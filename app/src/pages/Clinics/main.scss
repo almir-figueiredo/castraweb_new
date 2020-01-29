@@ -19,6 +19,17 @@
   font-size: 13px;
 }
 
+.fc-content {
+  text-align: center;
+}
+
+.fc-day-top.fc-today {
+  color: red;
+}
+.fc-day-top.fc-past {
+  color: gray;
+}
+
 .fc-time{
   display : none;
 }

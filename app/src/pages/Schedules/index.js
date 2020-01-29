@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useState, useEffect } from 'react';
 import { subDays, addDays } from 'date-fns';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
@@ -23,13 +24,13 @@ export default function ClinicSchedules() {
       const { data } = await api.get('schedules', {
         params: { date },
       });
-      setSchedules(data);
+      setSchedules(data.filter(f => f.clinic_id == dateDefault.id));
     }
     if (date) {
       loadSchedule();
     }
-  }, [date]);
-
+  }, [date, dateDefault.id]);
+  console.log(schedules);
   async function handleDelete(id) {
     // eslint-disable-next-line no-alert
     if (window.confirm('Deseja deletar este agendamento?') === true) {

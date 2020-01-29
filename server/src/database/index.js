@@ -6,10 +6,11 @@ import Animal from '../app/models/Animal';
 import Clinic from '../app/models/Clinic';
 import Appointment from '../app/models/Appointment';
 import File from '../app/models/File';
+import Holiday from '../app/models/Holiday';
 
 import databaseConfig from '../config/database';
 
-const models = [User, File, Appointment, Animal, Operator, Clinic];
+const models = [User, File, Appointment, Animal, Operator, Clinic, Holiday];
 
 class Database {
   constructor() {

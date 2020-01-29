@@ -1,33 +1,48 @@
+/* eslint-disable no-alert */
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+import * as Yup from 'yup';
 import api from '../../services/api';
 import history from '../../services/history';
 
 import MenuBar from '../../components/MenuBar';
+import FormModal from '../../components/ModalForm';
+import formTitles from '../../FormsModels/Animals/formTitles';
+import { animalsListRequest } from '../../store/modules/animal/actions';
 
-import { ContainerAnimals, Content, TableAnimals } from './styles';
+import { ContainerAnimals, BottomBar, Content, TableAnimals } from './styles';
 
 export default function UserAnimals() {
-  const { id } = useParams();
-  const [animals, setAnimals] = useState([]);
+  const user = useParams();
+  const dispatch = useDispatch();
+  const { data } = useSelector(state => state.animal);
+  const [visible, setVisible] = useState(true);
+  const schema = Yup.object().shape({
+    auth_number: Yup.string(),
+    name: Yup.string(),
+    specie: Yup.string(),
+    gender: Yup.string(),
+    race: Yup.string(),
+    size: Yup.string(),
+    age: Yup.string(),
+  });
 
   useEffect(() => {
-    async function loadAnimals() {
-      const { data } = await api.get(`users/${id}/animals`);
-      setAnimals(data);
-    }
-    if (id) {
-      loadAnimals();
-    }
-  }, [id]);
+    if (data.length === 3) setVisible(false);
+  }, [data.length]);
 
   async function handleDelete(choosedId) {
-    // eslint-disable-next-line no-alert
     if (window.confirm('Deseja deletar este animal?') === true) {
       await api.delete(`animals/${choosedId}`);
-
-      setAnimals(animals.filter(animal => animal.id === choosedId));
+      dispatch(animalsListRequest(user.id));
+      setVisible(true);
     }
+  }
+
+  async function handleAppointment() {
+    history.push(`/users/${user.id}/animals/appointment`);
   }
 
   return (
@@ -35,8 +50,8 @@ export default function UserAnimals() {
       <ContainerAnimals>
         <MenuBar
           title="ANIMAIS CADASTRADOS PARA O USUÁRIO"
-          route={`users/${id}/animals`}
-          id={id}
+          route={`users/${user.id}/animals`}
+          visible={visible}
         />
 
         <Content>
@@ -51,7 +66,7 @@ export default function UserAnimals() {
               </tr>
             </thead>
             <tbody>
-              {animals.map(animal => (
+              {data.map(animal => (
                 <tr key={animal.id}>
                   <td>{animal.name}</td>
                   <td>{animal.specie}</td>
@@ -63,7 +78,9 @@ export default function UserAnimals() {
                       className="edit"
                       type="button"
                       onClick={() =>
-                        history.push(`/users/${id}/animals/edit/${animal.id}`)
+                        history.push(
+                          `/users/${user.id}/animals/edit/${animal.id}`
+                        )
                       }
                     >
                       editar
@@ -81,6 +98,30 @@ export default function UserAnimals() {
             </tbody>
           </TableAnimals>
         </Content>
+        <BottomBar>
+          <p>
+            Você tem {data.length} {data.length === 1 ? 'animal' : 'animais'}{' '}
+            cadastrados para o Termo de Encaminhamento nº 850.{' '}
+            {data.length === 3
+              ? 'Para agendar as cirurgias clique no botão AGENDAR.'
+              : 'Caso queira cadastrar mais, clique no botão CADASTRAR.'}
+            <br />
+            {data.length < 3
+              ? `Caso deseje finalizar o cadastro e agendar a
+            ${data.length === 1 ? ' ' : 's '}
+            cirurgia${data.length === 1 ? ' ' : 's '}clique no botão AGENDAR.`
+              : ''}
+          </p>
+          <FormModal
+            target="agendar"
+            backTarget="início"
+            buttonTitle="AGENDAR"
+            name="Animais"
+            schema={schema}
+            onSubmit={handleAppointment}
+            formTitles={formTitles.formTitles}
+          />
+        </BottomBar>
       </ContainerAnimals>
     </>
   );

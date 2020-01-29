@@ -1,5 +1,5 @@
 import Sequelize, { Model } from 'sequelize';
-import { isBefore, subDays, isAfter } from 'date-fns';
+import { isBefore, subDays, isAfter, parseISO } from 'date-fns';
 
 class Appointment extends Model {
   static init(sequelize) {

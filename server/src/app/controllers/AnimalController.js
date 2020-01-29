@@ -88,6 +88,12 @@ class AnimalController {
     return res.status(200).json(animal);
   }
 
+  async all(_, res) {
+    const animal = await Animal.findAll();
+
+    return res.status(200).json(animal);
+  }
+
   async update(req, res) {
     const schema = Yup.object().shape({
       auth_number: Yup.string(),
@@ -110,6 +116,12 @@ class AnimalController {
     animal = await animal.update(req.body);
 
     return res.status(200).json(animal);
+  }
+
+  async delete(req, res) {
+    const { id } = req.params;
+    Animal.destroy({ where: { id } });
+    return res.status(200).json({ message: 'Deleted.' });
   }
 }
 

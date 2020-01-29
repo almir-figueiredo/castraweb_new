@@ -6,7 +6,7 @@ export default reducers => {
     {
       key: 'castraweb',
       storage,
-      whitelist: ['auth'],
+      whitelist: ['auth', 'schedule', 'animal'],
     },
     reducers
   );

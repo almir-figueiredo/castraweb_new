@@ -50,8 +50,8 @@ class AppointmentController {
 
   async store(req, res) {
     const schema = Yup.object().shape({
-      clinic_id: Yup.number().required(),
-      date: Yup.date().required(),
+      clinic_id: Yup.number(),
+      date: Yup.date(),
     });
 
     if (!(await schema.isValid(req.body))) {
@@ -60,87 +60,24 @@ class AppointmentController {
 
     const { clinic_id, date } = req.body;
 
-    // const dayChoose = format(startOfDay(parseISO(date)), 'dd/MM/yyyy');
-
     if (isBefore(date, new Date())) {
       throw new Error('Não é possível agendar em datas passadas');
     }
 
-    const checkAvailability_LargeFemaleDog = await Appointment.findAndCountAll({
-      where: {
-        clinic_id,
-        canceled_at: null,
-        date,
-      },
-      include: [
-        {
-          model: Animal,
-          where: { specie: 'canina', gender: 'F', size: 'G' },
-        },
-      ],
-      distinct: true,
-    });
-    const checkAvailability_SmallFemaleDog = await Appointment.findAndCountAll({
-      where: {
-        clinic_id,
-        canceled_at: null,
-        date,
-      },
-      include: [
-        {
-          model: Animal,
-          where: { specie: 'canina', gender: 'F', size: 'P' },
-        },
-      ],
-      distinct: true,
-    });
-    const checkAvailability_MaleDog = await Appointment.findAndCountAll({
-      where: {
-        clinic_id,
-        canceled_at: null,
-        date,
-      },
-      include: [
-        {
-          model: Animal,
-          where: { specie: 'canina', gender: 'M' },
-        },
-      ],
-      distinct: true,
-    });
-    const checkAvailability_MaleCat = await Appointment.findAndCountAll({
-      where: {
-        clinic_id,
-        canceled_at: null,
-        date,
-      },
-      include: [
-        {
-          model: Animal,
-          where: { specie: 'felina', gender: 'M' },
-        },
-      ],
-      distinct: true,
-    });
-    const checkAvailability_FemaleCat = await Appointment.findAndCountAll({
-      where: {
-        clinic_id,
-        canceled_at: null,
-        date,
-      },
-      include: [
-        {
-          model: Animal,
-          where: { specie: 'felina', gender: 'F' },
-        },
-      ],
-      distinct: true,
+    const animalExists = await Appointment.findOne({
+      where: { animal_id: req.params.animalId },
     });
 
+    if (animalExists) {
+      return res
+        .status(400)
+        .json({ error: 'Não é possível agendar duas vezes o mesmo animal.' });
+    }
+
     const appointmentSave = await Appointment.create({
-      user_id: req.params.userId,
+      user_id: req.userId,
       clinic_id,
-      animal_id: req.params.animalId,
+      animal_id: req.animalId,
       date,
     });
 
@@ -157,63 +94,6 @@ class AppointmentController {
       ],
     });
 
-    const animalExists = await Appointment.findOne({
-      where: { animal_id: req.params.animalId },
-    });
-
-    if (animalExists) {
-      return res
-        .status(400)
-        .json({ error: 'Não é possível agendar duas vezes o mesmo animal.' });
-    }
-
-    if (
-      checkAvailability_LargeFemaleDog.count === 1 &&
-      appointment.Animal.specie === 'canina' &&
-      appointment.Animal.gender === 'F' &&
-      appointment.Animal.size === 'G'
-    ) {
-      return res.status(400).json({
-        error: 'Não há vagas para cadelas de grande porte neste dia.',
-      });
-    }
-    if (
-      checkAvailability_SmallFemaleDog.count === 3 &&
-      appointment.Animal.specie === 'canina' &&
-      appointment.Animal.gender === 'F' &&
-      appointment.Animal.size === 'P'
-    ) {
-      return res.status(400).json({
-        error: 'Não há vagas para cadelas de pequeno porte neste dia.',
-      });
-    }
-    if (
-      checkAvailability_MaleDog.count === 5 &&
-      appointment.Animal.specie === 'canina' &&
-      appointment.Animal.gender === 'M'
-    ) {
-      return res.status(400).json({
-        error: 'Não há vagas para cachorros neste dia.',
-      });
-    }
-    if (
-      checkAvailability_FemaleCat.count === 5 &&
-      appointment.Animal.specie === 'felina' &&
-      appointment.Animal.gender === 'F'
-    ) {
-      return res.status(400).json({
-        error: 'Não há vagas para gatas neste dia.',
-      });
-    }
-    if (
-      checkAvailability_MaleCat.count === 1 &&
-      appointment.Animal.specie === 'felina' &&
-      appointment.Animal.gender === 'M'
-    ) {
-      return res.status(400).json({
-        error: 'Não há vagas para gatos neste dia.',
-      });
-    }
     return res.json(appointment);
   }
 

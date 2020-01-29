@@ -27,13 +27,14 @@ const bruteStore = new BruteRedis({
   port: process.env.REDIS_PORT,
 });
 
-routes.get('/holidays', HolidayController.index);
+routes.post('/holidays', HolidayController.store);
+routes.get('/holidays', HolidayController.list);
 const bruteForce = new Brute(bruteStore);
 
 routes.post('/sessions', bruteForce.prevent, SessionController.store);
 routes.post(
   '/operators/sessions',
-  bruteForce.prevent,
+  // bruteForce.prevent,
   OperatorSessionController.store
 );
 routes.post(
@@ -41,6 +42,8 @@ routes.post(
   bruteForce.prevent,
   ClinicSessionController.store
 );
+routes.get('/schedules', ScheduleController.list);
+routes.get('/clinics', ClinicController.list);
 
 routes.use(authMiddleware);
 routes.post('/users', UserController.store);
@@ -53,10 +56,12 @@ routes.delete('/users/:id', UserController.delete);
 routes.post('/users/:userId/animals', AnimalController.store);
 routes.put('/users/:userId/animals/:id', AnimalController.update);
 routes.get('/users/:userId/animals/:id', AnimalController.details);
-routes.get('/animals/:userId/availabilities', AvailableController.index);
+routes.delete('/animals/:id', AnimalController.delete);
+routes.get('/animals', AnimalController.all);
+routes.get('/users/:userId/animals-availabilities', AvailableController.index);
 
 routes.post(
-  '/users/:userId/animals/:animalId/appointments',
+  '/users/:userId/animals/:animalId/appointment',
   AppointmentController.store
 );
 routes.get('/users/:userId/appointments', AppointmentController.index);
@@ -68,14 +73,11 @@ routes.put('/operators/:id', OperatorController.update);
 routes.delete('/operators/:id', OperatorController.delete);
 
 routes.post('/clinics', ClinicController.store);
-routes.get('/clinics', ClinicController.list);
 routes.get('/clinics/:id', ClinicController.details);
 routes.put('/clinics/:id', ClinicController.update);
 routes.delete('/clinics/:id', ClinicController.delete);
 
 // routes.get('/schedules', ScheduleController.index);
-routes.get('/schedules', ScheduleController.list);
-routes.get('/schedules/:clinicId', ScheduleController.index);
 routes.get('/schedules/:id', ScheduleController.details);
 routes.put('/schedules/:id', ScheduleController.update);
 routes.delete('/schedules/:id', ScheduleController.delete);

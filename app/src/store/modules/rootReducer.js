@@ -2,10 +2,12 @@ import { combineReducers } from 'redux';
 
 import auth from './auth/reducer';
 import user from './user/reducer';
-import clinic from './clinic/reducer';
+import animal from './animal/reducer';
+import schedule from './schedule/reducer';
 
 export default combineReducers({
   auth,
-  clinic,
+  animal,
   user,
+  schedule,
 });
